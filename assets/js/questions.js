@@ -19,11 +19,13 @@ startButton.addEventListener('click', function (e) {
 });
 
 function displayQuestion() {
-  questionTitle.textContent = questions[currentQuestion].question;
+  const curQuestion = questions[currentQuestion];
+  questionTitle.textContent = curQuestion.question;
 
-  for (let i = 0; i < questions.answers.length; i++) {
-    const question = questions.answers[i];
-    
-    const li = document.createElement('li');
+  for (let i = 0; i < curQuestion.answers.length; i++) {
+    const answer = curQuestion.answers[i];
+    let button = document.createElement('button');
+    button.innerText = answer;
+    choicesDiv.appendChild(button);
   }
 }

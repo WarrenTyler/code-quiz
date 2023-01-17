@@ -20,12 +20,16 @@ const questions = [
 
 let currentQuestion = 0;
 let time = 10;
-let timeInterval;
+
 
 function startTimer() {
   timeEl.textContent = time;
-  
-  timeInterval = setInterval(() => {
+
+  const timeInterval = setInterval(() => {
+    if (time <= 0) {
+      clearInterval(timeInterval);
+    }
+
     timeEl.textContent = time;
     time--;
   }, 1000);

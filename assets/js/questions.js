@@ -19,7 +19,7 @@ const questions = [
 
 let currentQuestion = 0;
 
-startButton.addEventListener("click", function (e) {
+startButton.addEventListener("click", (e) => {
   questionDiv.classList.remove("hide");
   startScreen.classList.add("hide");
   displayQuestion();
@@ -29,9 +29,23 @@ function displayQuestion() {
   const curQuestion = questions[currentQuestion];
   questionTitle.textContent = curQuestion.question;
 
+  // Questions contain buttons for each answer.
   curQuestion.choices.forEach((choice, i) => {
     const button = document.createElement("button");
     button.innerText = `${i + 1}. ${choice}`;
     choicesDiv.appendChild(button);
   });
 }
+
+function nextQuestion() {
+  currentQuestion++;
+  displayQuestion();
+}
+
+choicesDiv.addEventListener("click", (e) => {
+  alert(e.target.matches("button"));
+  if (e.target.matches("button")) {
+    // checkCorrect
+    nextQuestion();
+  }
+});

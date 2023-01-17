@@ -30,6 +30,7 @@ function displayQuestion() {
   questionTitle.textContent = curQuestion.question;
 
   // Questions contain buttons for each answer.
+  choicesDiv.innerText = ""; // clear before populating
   curQuestion.choices.forEach((choice, i) => {
     const button = document.createElement("button");
     button.innerText = `${i + 1}. ${choice}`;

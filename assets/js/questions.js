@@ -18,21 +18,24 @@ const questions = [
   },
 ];
 
+const timePenalty = 5; 
 let currentQuestion = 0;
 let time = 10;
 
+function displayTime() {
+  timeEl.textContent = time;
+}
 
 function startTimer() {
-  timeEl.textContent = time;
-
+  const oneSecond = 1000;
   const timeInterval = setInterval(() => {
+    time--;
+    displayTime();
+
     if (time <= 0) {
       clearInterval(timeInterval);
     }
-
-    timeEl.textContent = time;
-    time--;
-  }, 1000);
+  }, oneSecond);
 }
 
 startButton.addEventListener("click", (e) => {
@@ -51,6 +54,7 @@ function displayQuestion() {
   curQuestion.choices.forEach((choice, i) => {
     const button = document.createElement("button");
     button.innerText = `${i + 1}. ${choice}`;
+    button.dataset.correctChoice = curQuestion.correctChoice === i;
     choicesEl.appendChild(button);
   });
 }
@@ -63,6 +67,10 @@ function nextQuestion() {
 choicesEl.addEventListener("click", (e) => {
   if (e.target.matches("button")) {
     // checkCorrect
+    if (e.target.dataset.correctChoice === "false") {
+      time -= timePenalty;
+      displayTime();
+    }
     nextQuestion();
   }
 });

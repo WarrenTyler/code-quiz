@@ -1,8 +1,9 @@
 const startButton = document.querySelector("#start");
-const questionDiv = document.querySelector("#questions");
+const questionEl = document.querySelector("#questions");
 const startScreen = document.querySelector("#start-screen");
 const questionTitle = document.querySelector("#question-title");
-const choicesDiv = document.querySelector("#choices");
+const choicesEl = document.querySelector("#choices");
+const timeEl = document.querySelector("#time");
 
 const questions = [
   {
@@ -18,10 +19,22 @@ const questions = [
 ];
 
 let currentQuestion = 0;
+let time = 10;
+let timeInterval;
+
+function startTimer() {
+  timeEl.textContent = time;
+  
+  timeInterval = setInterval(() => {
+    timeEl.textContent = time;
+    time--;
+  }, 1000);
+}
 
 startButton.addEventListener("click", (e) => {
-  questionDiv.classList.remove("hide");
+  questionEl.classList.remove("hide");
   startScreen.classList.add("hide");
+  startTimer();
   displayQuestion();
 });
 
@@ -30,11 +43,11 @@ function displayQuestion() {
   questionTitle.textContent = curQuestion.question;
 
   // Questions contain buttons for each answer.
-  choicesDiv.innerText = ""; // clear before populating
+  choicesEl.innerText = ""; // clear before populating
   curQuestion.choices.forEach((choice, i) => {
     const button = document.createElement("button");
     button.innerText = `${i + 1}. ${choice}`;
-    choicesDiv.appendChild(button);
+    choicesEl.appendChild(button);
   });
 }
 
@@ -43,8 +56,7 @@ function nextQuestion() {
   displayQuestion();
 }
 
-choicesDiv.addEventListener("click", (e) => {
-  alert(e.target.matches("button"));
+choicesEl.addEventListener("click", (e) => {
   if (e.target.matches("button")) {
     // checkCorrect
     nextQuestion();

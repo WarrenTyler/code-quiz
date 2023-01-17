@@ -29,9 +29,9 @@ function displayQuestion() {
   const curQuestion = questions[currentQuestion];
   questionTitle.textContent = curQuestion.question;
 
-  curQuestion.choices.forEach((choice) => {
+  curQuestion.choices.forEach((choice, i) => {
     const button = document.createElement("button");
-    button.innerText = choice;
+    button.innerText = `${i + 1}. ${choice}`;
     choicesDiv.appendChild(button);
   });
 }

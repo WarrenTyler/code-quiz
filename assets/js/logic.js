@@ -5,16 +5,17 @@ const questionTitleEl = document.querySelector("#question-title");
 const choicesEl = document.querySelector("#choices");
 const timeEl = document.querySelector("#time");
 const endScreenEl = document.querySelector("#end-screen");
+const feedbackEl = document.querySelector("#feedback");
 
 const timePenalty = 5;
 let currentQuestion = 0;
 let time = 10;
+let timeInterval;
 
 function displayTime() {
   timeEl.textContent = time;
 }
 
-let timeInterval;
 function startTimer() {
   const oneSecond = 1000;
   timeInterval = setInterval(() => {
@@ -66,11 +67,22 @@ function updateTimer(secondsToDeduct) {
   displayTime();
 }
 
+function displayFeedback(msg) {
+  feedbackEl.textContent = msg;
+  feedbackEl.classList.remove("hide");
+  setTimeout(() => {
+    feedbackEl.classList.add("hide");
+  }, 100);
+}
+
 choicesEl.addEventListener("click", (e) => {
   if (e.target.matches("button")) {
     // checkCorrect
     if (e.target.dataset.correctChoice === "false") {
       updateTimer(timePenalty);
+      displayFeedback("Wrong!");
+    } else {
+      displayFeedback("Correct!");
     }
     nextQuestion();
   }

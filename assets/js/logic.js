@@ -9,8 +9,11 @@ const feedbackEl = document.querySelector("#feedback");
 const enterScoreButtonEl = document.querySelector("#submit");
 
 const timePenalty = 5;
+const timePerQuestion = 10;
+
 let currentQuestion = 0;
-let time = 10;
+// set time based on amount of questions
+let time = timePerQuestion * questions.length;
 let timeInterval;
 
 function displayTime() {

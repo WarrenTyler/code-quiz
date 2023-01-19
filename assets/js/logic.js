@@ -68,11 +68,13 @@ function updateTimer(secondsToDeduct) {
 }
 
 function displayFeedback(msg) {
+  const feedbackDisplayTime = 100; //ms
+
   feedbackEl.textContent = msg;
   feedbackEl.classList.remove("hide");
   setTimeout(() => {
     feedbackEl.classList.add("hide");
-  }, 100);
+  }, feedbackDisplayTime);
 }
 
 function displayEndScreen() {

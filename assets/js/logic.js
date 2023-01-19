@@ -63,6 +63,7 @@ function updateTimer(secondsToDeduct) {
   if (time <= 0) {
     clearInterval(timeInterval);
     time = 0;
+    displayEndScreen();
   }
   displayTime();
 }

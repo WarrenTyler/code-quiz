@@ -6,6 +6,7 @@ const choicesEl = document.querySelector("#choices");
 const timeEl = document.querySelector("#time");
 const endScreenEl = document.querySelector("#end-screen");
 const feedbackEl = document.querySelector("#feedback");
+const enterScoreButtonEl = document.querySelector("#submit");
 
 const timePenalty = 5;
 let currentQuestion = 0;
@@ -48,10 +49,9 @@ function displayQuestion() {
 function nextQuestion() {
   currentQuestion++;
 
-  if (currentQuestion === questions.length) {
+  if (currentQuestion >= questions.length) {
     clearInterval(timeInterval); // stop timer
-    questionEl.classList.add("hide");
-    endScreenEl.classList.remove("hide");
+    displayEndScreen();
   } else {
     displayQuestion();
   }
@@ -75,9 +75,14 @@ function displayFeedback(msg) {
   }, 100);
 }
 
+function displayEndScreen() {
+  questionEl.classList.add("hide");
+  endScreenEl.classList.remove("hide");
+}
+
 choicesEl.addEventListener("click", (e) => {
   if (e.target.matches("button")) {
-    // checkCorrect
+    // check answer
     if (e.target.dataset.correctChoice === "false") {
       updateTimer(timePenalty);
       displayFeedback("Wrong!");
@@ -86,4 +91,19 @@ choicesEl.addEventListener("click", (e) => {
     }
     nextQuestion();
   }
+});
+
+enterScoreButtonEl.addEventListener("click", () => {
+  const initialsEl = document.querySelector("#initials");
+  const highscores = JSON.parse(localStorage.getItem("highscores")) || [];
+  const score = {
+    initials: initialsEl.value,
+    time: time,
+  };
+
+  highscores.push(score);
+  localStorage.setItem("highscores", JSON.stringify(highscores));
+
+  // redirect to highscores page
+  location.href = "highscores.html";
 });

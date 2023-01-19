@@ -8,7 +8,7 @@ const endScreenEl = document.querySelector("#end-screen");
 const feedbackEl = document.querySelector("#feedback");
 const enterScoreButtonEl = document.querySelector("#submit");
 
-const timePenalty = 5;
+const timePenalty = 10;
 const timePerQuestion = 10;
 
 let currentQuestion = 0;

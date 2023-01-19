@@ -31,6 +31,7 @@ function startTimer() {
 startButtonEl.addEventListener("click", (e) => {
   questionEl.classList.remove("hide");
   startScreenEl.classList.add("hide");
+  displayTime();
   startTimer();
   displayQuestion();
 });

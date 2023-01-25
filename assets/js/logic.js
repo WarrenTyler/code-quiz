@@ -102,10 +102,16 @@ choicesEl.addEventListener("click", (e) => {
 
 enterScoreButtonEl.addEventListener("click", () => {
   const initialsEl = document.querySelector("#initials");
+  const initials = initialsEl.value;
+  // don't allow empty input values
+  if(!initials) {
+    return;
+  }
+
   const highscores = JSON.parse(localStorage.getItem("highscores")) || [];
   const score = {
-    initials: initialsEl.value,
-    time: time,
+    initials,
+    time,
   };
 
   highscores.push(score);

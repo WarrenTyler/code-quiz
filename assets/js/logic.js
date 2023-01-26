@@ -8,6 +8,10 @@ const endScreenEl = document.querySelector("#end-screen");
 const feedbackEl = document.querySelector("#feedback");
 const enterScoreButtonEl = document.querySelector("#submit");
 
+// when the question is first displayed and no answer attempted,
+// then questionReady will be true
+let questionReady = true;
+
 const timePenalty = 10;
 const timePerQuestion = 10;
 
@@ -40,7 +44,7 @@ function displayQuestion() {
   const curQuestion = questions[currentQuestion];
   questionTitleEl.textContent = curQuestion.question;
 
-  // Questions contain buttons for each answer.
+  // questions contain buttons for each answer.
   choicesEl.innerText = ""; // clear before populating
   curQuestion.choices.forEach((choice, i) => {
     const button = document.createElement("button");
@@ -72,14 +76,31 @@ function updateTimer(secondsToDeduct) {
   displayTime();
 }
 
-function displayFeedback(msg) {
-  const feedbackDisplayTime = 100; //ms
+// function displayFeedback(msg, milliseconds) {
+//   feedbackEl.textContent = msg;
+//   feedbackEl.classList.remove("hide");
+//   setTimeout(() => {
+//     feedbackEl.classList.add("hide");
+//   }, milliseconds);
+// }
 
-  feedbackEl.textContent = msg;
+function displayFeedback(feedbackText) {
+  feedbackEl.textContent = feedbackText;
   feedbackEl.classList.remove("hide");
+}
+
+function hideFeedback() {
+  feedbackEl.classList.add("hide");
+}
+function questionTransition(milliseconds, feedback) {
+  displayFeedback(feedback);
+  questionReady = false;
+
   setTimeout(() => {
-    feedbackEl.classList.add("hide");
-  }, feedbackDisplayTime);
+    nextQuestion();
+    questionReady = true;
+    hideFeedback();
+  }, milliseconds);
 }
 
 function displayEndScreen() {
@@ -88,15 +109,17 @@ function displayEndScreen() {
 }
 
 choicesEl.addEventListener("click", (e) => {
-  if (e.target.matches("button")) {
+  if (e.target.matches("button") && questionReady) {
+    const milliseconds = 1800;
+    let resultText;
     // check answer
     if (e.target.dataset.correctChoice === "false") {
       updateTimer(timePenalty);
-      displayFeedback("Wrong!");
+      resultText = "Wrong!";
     } else {
-      displayFeedback("Correct!");
+      resultText = "Correct!";
     }
-    nextQuestion();
+    questionTransition(milliseconds, resultText);
   }
 });
 
@@ -104,7 +127,7 @@ enterScoreButtonEl.addEventListener("click", () => {
   const initialsEl = document.querySelector("#initials");
   const initials = initialsEl.value;
   // don't allow empty input values
-  if(!initials) {
+  if (!initials) {
     return;
   }
 

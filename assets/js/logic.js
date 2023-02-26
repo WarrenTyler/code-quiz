@@ -20,6 +20,7 @@ let currentQuestion = 0;
 let time = timePerQuestion * questions.length;
 let timeInterval;
 
+// display time to user
 function displayTime() {
   timeEl.textContent = time;
 }
@@ -32,6 +33,7 @@ function startTimer() {
   }, oneSecond);
 }
 
+// EVENT LISTENERS ------------------------------------------------------------- //
 startButtonEl.addEventListener("click", (e) => {
   questionEl.classList.remove("hide");
   startScreenEl.classList.add("hide");
@@ -47,6 +49,7 @@ function displayQuestion() {
   // questions contain buttons for each answer.
   choicesEl.innerText = ""; // clear before populating
   curQuestion.choices.forEach((choice, i) => {
+    // dynamically create a button and add it to the DOM
     const button = document.createElement("button");
     button.innerText = `${i + 1}. ${choice}`;
     button.dataset.correctChoice = curQuestion.correctChoice === i;
@@ -76,14 +79,6 @@ function updateTimer(secondsToDeduct) {
   displayTime();
 }
 
-// function displayFeedback(msg, milliseconds) {
-//   feedbackEl.textContent = msg;
-//   feedbackEl.classList.remove("hide");
-//   setTimeout(() => {
-//     feedbackEl.classList.add("hide");
-//   }, milliseconds);
-// }
-
 function displayFeedback(feedbackText) {
   feedbackEl.textContent = feedbackText;
   feedbackEl.classList.remove("hide");
@@ -92,6 +87,7 @@ function displayFeedback(feedbackText) {
 function hideFeedback() {
   feedbackEl.classList.add("hide");
 }
+
 function questionTransition(milliseconds, feedback) {
   displayFeedback(feedback);
   questionReady = false;
@@ -111,8 +107,8 @@ function displayEndScreen() {
 choicesEl.addEventListener("click", (e) => {
   if (e.target.matches("button") && questionReady) {
     const milliseconds = 1800;
-    let resultText;
     // check answer
+    let resultText;
     if (e.target.dataset.correctChoice === "false") {
       updateTimer(timePenalty);
       resultText = "Wrong!";
@@ -128,16 +124,24 @@ enterScoreButtonEl.addEventListener("click", () => {
   const initials = initialsEl.value;
   // don't allow empty input values
   if (!initials) {
+    displayFeedback("Please enter your initials");
+    setTimeout(() => {
+      hideFeedback();
+    }, 200);
+
     return;
   }
 
+  // get the highscores or an empty array if there aren't any
   const highscores = JSON.parse(localStorage.getItem("highscores")) || [];
   const score = {
     initials,
     time,
   };
 
+  // push the score into highscores
   highscores.push(score);
+  // store highscores in local storage
   localStorage.setItem("highscores", JSON.stringify(highscores));
 
   // redirect to highscores page

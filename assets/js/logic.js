@@ -105,6 +105,8 @@ function displayEndScreen() {
 }
 
 choicesEl.addEventListener("click", (e) => {
+  // Allow a pause for user to see if they answered correctly
+  // and don't allow them to click in that time
   if (e.target.matches("button") && questionReady) {
     const milliseconds = 1800;
     // check answer
